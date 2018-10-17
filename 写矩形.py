@@ -9,17 +9,21 @@ class Rectangle:
 
     #给矩形边长赋值
     def __setattr__(self,name,value):
-        print("给边长赋值情况为：")
         if name == 'square':
             self.width = value
             self.height = value
         else:
             #为什么等于value不知道,但是这样写会造成死循环
             #self.name = value
-            super().__setattr__(name,value)
+            #1、需要使用下面的方法
+            #super().__setattr__(name,value)
+            #2、除了上面方法，还可以用__dict__    字典属性
+            self.__dict__[name] = value
 
 
     #求矩形面积
+
     def getArea(self):
-        print("该矩形面积为：")
         return self.height * self.width
+
+
