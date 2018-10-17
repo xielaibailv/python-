@@ -3,12 +3,23 @@
 #2、如果为一个叫square的属性赋值，则说明是一个正方形，值即边长，此时宽和高都等于边长
 
 class Rectangle:
-	def __init__(self,width=0,height=0):
-		self.height = height
-		self.width = width
+    def __init__(self,width=0,height=0):
+        self.height = height
+        self.width = width
 
-	def __setattr__(self,name,value):
-		print("给边长赋值情况为：")
-		super().__setattr__(square,value)
+    #给矩形边长赋值
+    def __setattr__(self,name,value):
+        print("给边长赋值情况为：")
+        if name == 'square':
+            self.width = value
+            self.height = value
+        else:
+            #为什么等于value不知道,但是这样写会造成死循环
+            #self.name = value
+            super().__setattr__(name,value)
 
 
+    #求矩形面积
+    def getArea(self):
+        print("该矩形面积为：")
+        return self.height * self.width
