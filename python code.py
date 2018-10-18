@@ -1525,3 +1525,301 @@ getattr
 setattr
 >>> del c.x
 delattr
+
+print("----------------------------------------------------over----------------------------------------------")
+描述符 property的原理
+描述符就是将某种特殊类型的类的实例指派给另一个类的属性。
+
+特殊类：一定要实现以下三个方法中的一个
+
+__get__(self,instance,owner)  #用于访问属性，返回属性的值
+__set__(self,instance,value)     #将在属性分配操作中调用，不返回任何内容
+__del__(self,instance)                    #控制删除操作，不返回任何内容
+
+class MyDecriptor:
+	def __get__(self,instance,owner):
+		print("getting...",self,instance,owner)
+	def __set__(self,instance,value):
+		print("setting...",self,instance,value)
+	def __delete__(self,instance):
+		print("deleting...",self,instance)
+
+class Test:
+	x=MyDecriptor()
+
+>>> test=Test()
+>>> test.x
+可以看出，第一个参数是类自身的实例，第二个是其拥有者类的实例，第三个是拥有者本身
+getting... <__main__.MyDecriptor object at 0x00000261C5B13F60> <__main__.Test object at 0x00000261C5B36390> <class '__main__.Test'>
+>>> test
+<__main__.Test object at 0x00000261C5B36390>
+>>> Test
+<class '__main__.Test'>
+>>> >>> test.x='ire-MAN'
+setting... <__main__.MyDecriptor object at 0x00000261C5B13F60> <__main__.Test object at 0x00000261C5B36390> ire-MAN
+----------------------------------------------------------------
+通过下面的方法，可以利用x给_x赋值
+class  MyProperty:
+	def __init__(self,fget=None,fset=None,fdel=None):
+		self.fget = fget
+		self.fset = fset
+		self.fdel = fdel
+	def __get__(self,instance,owner):
+		return self.fget(instance)
+	def __set__(self,instance,value):
+		self.fset(instance,value)
+	def __delete__(self,instance):
+		self.fdel(instance)
+
+
+class C:
+	def __init__(self):
+		self._x = None
+	def getX(self):
+		return self._x
+	def setX(self,value):
+		self._x = value
+	def delX(self):
+		del self._x 
+
+	x = MyProperty(getX,setX,delX)
+
+>>> c=C()
+>>> c.x='MAN'
+>>> c.x
+'MAN'
+>>> c._x           #赋值成功
+'MAN'
+>>> del c.x       #c._x也将找不到值
+print("----------------------------------------------------over----------------------------------------------")
+
+协议：Protocols，类似接口，规定哪些方法必须要定义，不过在python中，协议更像是一种指南
+
+容器类型的协议：如果希望定制的容器是不可变的话，只需要定义__len__()和__getitem__()方法
+		   如果希望定制的容器是可变的话，除上面的方法外，还需定义__setitem__()和__delitem__()
+__len__(self)                                      定义当被len()调用时的行为（返回容器中的个数）
+__getitem__(self,key)                定义获取容器中指定元素的行为，相当于self[key]
+__setitem__(self,key,value)  定义设置容器中指定元素的行为，相当于self[key]= value
+__delitem__(self,key)                 定义删除容器中指定元素的行为，相当于 del self[key]
+
+
+-----------------
+编写一个不可改变的列表，记录列表中每个元素被访问的次数
+class Countlist:
+    #定义列表，因为不确定会传入多少个数，所以使用*args
+    #*args 表示任何多个无名参数，类型是一个元组tuple
+	def __init__(self,*args):
+        #args中的 x(参数) 依次循环出来，赋给self.values列表
+		self.values = [x for x in args]
+        #count()是列表的一个内置函数，计算元素出现的次数
+        #将该数值保存在一个字典中,下标：访问次数，默认是0
+        #fromkeys：用于创建一个新字典
+		self.count = {}.fromkeys(range(len(self.values)),0)
+    def __len__(self):
+         return len(self.values)
+
+    def __getitem__(self, key):
+        self.count[key] += 1
+        return self.values[key]
+
+ >>>  l1 = Countlist(1,2,3,4,5)
+>>>l2 = Countlist(2,4,6,8,10,20)
+>>>l1[3]
+4
+>>>l2[0]
+2
+>>>l1[0]+l2[0]
+3
+>>>l1.count
+{0: 1, 1: 0, 2: 0, 3: 1, 4: 0}
+
+print("----------------------------------------------------over----------------------------------------------")
+
+迭代器
+
+内置函数：BIF==Built-in
+
+iter()  迭代器
+next()
+--------------
+string = "monkey"
+it = iter(string)
+
+#调用next()可以返回迭代器里的值，如果没有值了，就会抛出stopIteration
+>>> next(it)
+'m'
+>>> next(it)
+'o'
+>>> next(it)
+'n'
+
+---------->>>
+links = {'花果山的和尚':'https://blog.csdn.net/amrenyu',\
+	'我的邮箱':'amrenyu@163.com'}
+for each in links:
+	print("%s -> %s" %(each,links[each]))
+
+打印效果：
+花果山的和尚 -> https://blog.csdn.net/amrenyu
+我的邮箱 -> amrenyu@163.com
+
+while语句同样可以实现
+string = "monkey"
+it = iter(string)
+while True:
+	try:
+		each = next(it)
+	except StopIteration:
+		break
+	print(each)
+
+打印效果：
+k
+e
+y
+
+---------------
+迭代器的魔法方法
+__iter__()
+__next__()
+
+class Fibs:
+	def __init__(self):
+		self.a = 0
+		self.b = 1
+	def __iter__(self):
+		return self
+	def __next__(self):
+		self.a,self.b = self.b,self.a + self.b
+		return self.a
+
+fibs = Fibs()
+for each in fibs:
+	print(each)
+
+打印效果：
+1
+1
+2
+3
+5
+8
+13
+.......
+
+加一个限制
+for each in fibs:
+	if each < 20:
+		print(each)
+	else:
+		break
+
+修改迭代器，增加一个参数，控制迭代的范围
+class Fibs:
+	def __init__(self,n = 10):
+		self.a = 0
+		self.b = 1
+		self.n = n
+	def __iter__(self):
+		return self
+	def __next__(self):
+		self.a,self.b = self.b,self.a + self.b
+		if self.a > self.n:
+			raise StopIteration
+		return self.a
+fibs = Fibs(100)
+for each in fibs:
+	print(each)
+
+打印效果：
+1
+1
+2
+3
+5
+8
+13
+21
+34
+55
+89
+
+print("----------------------------------------------------over----------------------------------------------")
+
+生成器(generator)：一种一边循环一边计算的机制。
+实际上是迭代器的一种实现。迭代器需要去定义一个类，而生成器只需要在普通函数里加上一个 yield即可。
+程序执行到yield时会暂停并保存当前所有的运行信息，返回 yield 的值, 并在下一次执行 next() 方法时从当前位置继续运行。
+def myGen():
+	print("生成器执行")
+	yield 1
+	yield 2
+
+执行效果：
+>>> m=myGen()
+>>> next(m)
+生成器执行
+1
+>>> next(m)
+2
+
+--------
+def lib():
+	a = 0
+	b = 1
+	while True:
+		a,b = b,a+b
+		yield a
+#调用lib()
+for each in lib():
+	if each > 100:
+		break
+	#end表示在一个迭代完成后显示的内容
+	print(each,end='   ')
+
+结果如下：
+1   1   2   3   5   8   13   21   34   55   89   
+
+>>>---------------------
+列表推导式：在列表里加一个for语句
+例如：100以内能被2整除不能被3整除的数
+a = [i for i in range(100) if not(i % 2) and i % 3]
+>>> a
+[2, 4, 8, 10, 14, 16, 20, 22, 26, 28, 32, 34, 38, 40, 44, 46, 50, 52, 56, 58, 62, 64, 68, 70, 74, 76, 80, 82, 86, 88, 92, 94, 98]
+--------------
+字典推导式：要加冒号
+例如：10以内能被2整除的数
+b = {i:i % 2 ==0 for i in range(10)}
+ >>>b
+{0: True, 1: False, 2: True, 3: False, 4: True, 5: False, 6: True, 7: False, 8: True, 9: False}
+----------
+集合推导式：无序，重复的元素会被剔除
+c = {i for i in [1,1,2,3,4,4,5,6,3,8,6,2]}
+>>> c
+{1, 2, 3, 4, 5, 6, 8}
+
+-----------------
+生成器推导式：用()括起来的就是生成器推导式
+
+e = (i for i in range(10))
+>>> next(e)
+0
+>>> for each in e:
+	print(each)
+
+	
+1
+2
+3
+4
+5
+6
+7
+8
+9
+生成器推导式如果作为函数的参数，不用加圆括号也可以
+常规方法：
+>>> sum((i for i in range(10) if i %2))
+25
+省略圆括号：
+>>> sum(i for i in range(20) if i % 2)
+100
