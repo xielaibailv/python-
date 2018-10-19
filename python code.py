@@ -1423,7 +1423,7 @@ class MyTime():
 		prompt = "总共运行了"
 		result = []
 		for index in range(6):
-			result.append(self.laseted[index] + other.lasted[index])
+			result.append(self.lasted[index] + other.lasted[index])
 			if result[index]:
 				prompt += (str(result[index]) + self.unit[index])
 		return prompt
@@ -1823,3 +1823,39 @@ e = (i for i in range(10))
 省略圆括号：
 >>> sum(i for i in range(20) if i % 2)
 100
+
+
+print("----------------------------------------------------over----------------------------------------------")
+
+模块 ：模块就是程序。例如一个后缀名为.py的文件就是一个模块。
+ 	容器 ->数据的封装
+ 	函数 ->语句的封装
+ 	类 ->方法和属性的封装
+ 	模块 ->程序 ，封装组织python的代码
+ 命名空间：模块都放在同一个文件夹下，在导入模块时可以直接  import 模块名 ;在调用模块里的类时，可能就需要制定该类的模块名
+例如 hello.py模块里有一个函数hi(),在调用时：c = hello.hi()，如果觉得麻烦，那么在导入时就要明确导入的函数名。
+
+导入模块：
+	one    -> import 模块名
+	two    -> from 模块名  import  函数名
+	three  -> import 模块名 as  新名字
+
+ print("----------------------------------------------------over----------------------------------------------")
+测试模块：
+if __name__ == "__main__":
+	test()
+
+测试模块：在代码的后面一般要写个test()，来验证前面的代码是否正确。但是在调用该模块时又不想让测试的方法被调用，
+就可以加一句上述代码即可。
+
+搜索路径：假如模块和模块不在一个文件夹下，那么需要了解搜索路径。
+搜索路径是一组列表，假如需要导入的模块不在搜索路径里，那么就加进去。
+
+import sys
+sys.path.append("E:\\......模块所在文件夹")
+sys.path     #就可以看到路径中有
+
+
+包（package）：创建一个文件夹，存放相关模块，文件夹的名字即包的名字
+		在文件夹里创建一个__init__.py的文件，可以是空文件
+
