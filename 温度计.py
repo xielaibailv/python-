@@ -29,3 +29,5 @@ class Temperature:
     #cel和fah属性各要写一个描述符类
     cel = Celsius()
     fah = Fahrenheit()
+
+
