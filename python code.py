@@ -1859,3 +1859,53 @@ sys.path     #就可以看到路径中有
 包（package）：创建一个文件夹，存放相关模块，文件夹的名字即包的名字
 		在文件夹里创建一个__init__.py的文件，可以是空文件
 
+print("----------------------------------------------------over----------------------------------------------")
+python有很多现成的模块，在需要用到的时候，可以去python文档里搜索
+	打开idle，help  -->Docs-->索引里输入要查找的模块名
+	或者在idle里 先导入模块，然后打印出其文档
+	>>>import timeit
+	>>>timeit.__doc__    #这个打印出来是没有格式的
+	>>>print(timeit.__doc__)    #这个会有格式，方便查看
+	>>dir(timeit)    #查看里面定义了哪些函数，变量，方法等
+	>>>timeit.__all__   #显示这个模块可用于外界调用的所有东西（类/函数）（不是所有的模块都有__all__,
+			     #如果使用  from timeit import * 导入，只有在__all__里出现的名字，才能被导入
+			     
+	  __file__        #指明了模块的源代码所在的位置
+
+
+ print("----------------------------------------------------over----------------------------------------------")
+
+ 爬虫
+ 1、python如何访问互联网？  urllib  包 里的  urllib.request
+
+ import urllib.request
+ r = urllib.request.urlopen("https://123.sogou.com/")
+ html = r.read()
+ print(html)     #返回的是一个二进制的字符串,需要进行解码操作
+ html = html.decode("utf-8")
+ print(html)
+
+---------------------
+import urllib.request
+
+#open url既可以是一个地址也可以是一个实例化对象
+response = urllib.request.urlopen('http://placekitten.com/200/200')
+#所以除了上面的办法，还可以用下面这种
+# res = urllib.request.Request('http://placekitten.com/200/200')
+# response = urllib.request.urlopen(res)
+
+#读取到指定的内容,除了用read方法，还可以用  geturl(),   info(),  getcode() 方法
+cat_img = response.read()
+
+#使用geturl()
+# response.geturl()
+#使用info()
+# response.info()
+# print(response.info())
+#使用getcode(),返回的是请求的状态码
+# response.getcode()
+
+#给图片命名，所有文件都是二进制，所以可以用写入的方式将图片’保存‘
+#“wb”指：二进制格式
+with open('cat2_200_200.jpg','wb') as f:
+    f.write(cat_img)
