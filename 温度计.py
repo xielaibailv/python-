@@ -30,11 +30,4 @@ class Temperature:
     cel = Celsius()
     fah = Fahrenheit()
 
-def test():
-    print("test :  0摄氏度 = %.2f 华氏度" % Celsius(0) )
-    print("test : 0华氏度 = %.2f 摄氏度" % Fahrenheit())
 
-test()
-
-if __name__ == "__main__":
-    test()
