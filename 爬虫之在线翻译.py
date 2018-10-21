@@ -3,6 +3,7 @@
 import urllib.request
 import urllib.parse
 import json
+
 #复制网址
 url= 'http://fanyi.youdao.com/translate?smartresult=dict&smartresult=rule'
 #下面的信息都是form data里的，前面加上data[],所有内容用引号引起来
