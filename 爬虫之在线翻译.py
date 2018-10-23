@@ -114,7 +114,8 @@ while True:
     url= 'http://fanyi.youdao.com/translate?smartresult=dict&smartresult=rule'
     #获取到header里的信息
     head = {}
-    head['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36'
+    head['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/' \
+                         '537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36'
 
     data = {}
     data['type'] = 'AUTO'

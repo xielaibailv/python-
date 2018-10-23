@@ -1965,3 +1965,121 @@ html = response.read().decode('utf-8')
 #将结果以json格式付给target，然后只打印翻译结果tgt参数
 target = json.loads(html)
 print("翻译结果：%s" % (target['translateResult'][0][0]['tgt']))
+
+
+>>>----------------
+ 在进行爬虫时，浏览器会检查是正常浏览器请求还是爬虫，所以需要隐藏。
+ 最简单的方法就是修改浏览器的headers参数。
+
+ headers参数 必须是一个字典，一个办法，直接设置一个字典作为参数传给request；
+ 						另一种是request生成之后，调用add_header()把header加进去。
+
+ url = 'http://fanyi.youdao.com/translate?smartresult=dict&smartresult=rule'
+ content = input("请输入想要翻译的内容：")
+
+ # 获取到header里的信息
+ head = {}
+ head[
+	 'User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36'
+
+ data = {}
+ data['type'] = 'AUTO'
+ data['i'] = content
+ data['doctype'] = 'json'
+ data['version'] = '2.1'
+ data['keyfrom'] = 'fanyi.web'
+ data['ue'] = 'UTF-8'
+ data['typoResult'] = 'false'
+ data = urllib.parse.urlencode(data).encode('utf-8')
+
+ # 使用第一种办法：通过Request的headers参数修改，直接将header信息以字典形式传入
+ # 将head信息传入request
+ req = urllib.request.Request(url, data, head)
+
+ '''
+ #第二种办法：先生成req，再利用Request.add_header()增加header
+ req = urllib.request.Request(url,data)
+ req.add_header('User-Agent','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36')
+ '''
+ response = urllib.request.urlopen(req)
+ html = response.read().decode('utf-8')
+
+ # 将结果以json格式付给target，然后只打印翻译结果tgt参数
+ target = json.loads(html)
+ print("翻译结果：%s" % (target['translateResult'][0][0]['tgt'])) head['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36'
+
+ 如何对一个网址抓取内容过于频繁，会导致被屏蔽。
+ 一个办法是降低访问频率，延迟提交时间；
+ 一个办法是代理。
+
+延迟提交时间，需要time模块
+ # 修改headers的user-agent信息
+ while True:
+	 content = input('请输入想要翻译的内容(退出程序请按"q!")：')
+	 if content == 'q!':
+		 break
+
+	 url = 'http://fanyi.youdao.com/translate?smartresult=dict&smartresult=rule'
+	 # 获取到header里的信息
+	 head = {}
+	 head[
+		 'User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36'
+
+	 data = {}
+	 data['type'] = 'AUTO'
+	 data['i'] = content
+	 data['doctype'] = 'json'
+	 data['version'] = '2.1'
+	 data['keyfrom'] = 'fanyi.web'
+	 data['ue'] = 'UTF-8'
+	 data['typoResult'] = 'false'
+	 data = urllib.parse.urlencode(data).encode('utf-8')
+
+	 # 使用第一种办法：通过Request的headers参数修改，直接将header信息以字典形式传入
+	 # 将head信息传入request
+	 req = urllib.request.Request(url, data, head)
+
+	 # #第二种办法：先生成req，再利用Request.add_header()增加header
+	 # req = urllib.request.Request(url,data)
+	 # req.add_header('User-Agent','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36')
+	 #
+	 response = urllib.request.urlopen(req)
+	 html = response.read().decode('utf-8')
+
+	 # 将结果以json格式付给target，然后只打印翻译结果tgt参数
+	 target = json.loads(html)
+	 print("翻译结果：%s" % (target['translateResult'][0][0]['tgt']))
+
+	 time.sleep(5)
+
+	 使用代理：代理ip可直接搜索出可用的ip
+	 步骤：
+	 1.参数是一个字典{'类型':'代理ip：端口号'}
+proxy_support = urllib.request.ProxyHandler({})
+
+2. 定制、创建一个 opener，opener相当于一个私人订制
+opener = urllib.request.build_opener(proxy_support)
+
+3a. 安装 opener
+urllib.request.install_opener(opener)
+3b. 调用 opener
+opener.open(url)
+
+
+
+
+
+print("----------------------------------------------------over----------------------------------------------")
+
+正则表达式：re
+
+ import re
+
+ 语法：
+ 1、寻找某个字符串，如果没有符合条件的会返回none
+ 	re.search(r'想要寻找的字符串','源字符串：想要寻找的字符串在这里')
+返回值为：
+<re.Match object; span=(5, 13), match='想要寻找的字符串'>
+
+如果要匹配比如ip的数字,()表示分组
+re.search(r'(([01]{0,1}\d\d|2[0-4]{0,1}\d|25[0-5]{0,1})\.){3}([01]{0,1}\d\d|2[0-4]{0,1}\d|25[0-5]{0,1})','192.168.2.45')
