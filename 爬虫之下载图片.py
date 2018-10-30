@@ -2,7 +2,7 @@ import urllib.request
 
 #open url既可以是一个地址也可以是一个实例化对象
 response = urllib.request.urlopen('http://placekitten.com/200/200')
-#所以除了上面的办法，还可以用下面这种
+#所以除了上面的办法，还可以用下面这种，实例化request
 # res = urllib.request.Request('http://placekitten.com/200/200')
 # response = urllib.request.urlopen(res)
 
