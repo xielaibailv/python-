@@ -81,7 +81,7 @@ from urllib.error import URLError
 
 
 #精简代码，并且加上异常处理，写成完整的模块
-#写成模块一定一定要记得加测试类，不然根本就跑步起来 T_T
+#写成模块一定一定要记得加测试类，不然根本就跑不起来 T_T
 def download_csv():
     try:
         for i in range(1,178):
