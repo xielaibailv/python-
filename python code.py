@@ -10,66 +10,7 @@
 
       
        
->>> f=open('E:\\桌面\w.txt',encoding= 'UTF-8')
->>> f.read()
-'#       f.close()                                 关闭文件\n#       f.read(size=-1)                   从文件读取size个字符，默认为-1，读取剩余所有字符，返回字符串\n#       f.readline()                         以写入模式打开，如果文件存在，则在末尾追加写入\n#       f.write(str)                          将字符串str写入文件\n#       f.writelines(seq)             向文件写入字符串序列seq，seq是一个返回字符串的可迭代对象\n#       f.seek(offset,from)        指针从from(0:起始位置；1:当前位置；2:文件末尾)偏移offset个字节\n#       f.tell()                                      返回当前在文件中的位置\n'
 
-
-新建文件也要用打开的方式
->>> w = open('E:\\桌面\\test1.txt','w')
->>> w.write('我是测试工程师')
-7
->>> w.close()
-
-就可以看到桌面上有一个文件。
--------------------------------------------------
-# split(sep=none,maxsplit=-1)  不带参数默认以空格为分隔符切片字符串，否则分割maxsplit个子字符串
-# 比如‘#       f.close()                             关闭文件 ’ 这一句，想要把#去掉，那么分隔符默认为空格，切片1
-
-将文件里的内容分开保存。
-f=open('E:\\桌面\w.txt',encoding= 'UTF-8')
-
-one = []
-two = []
-count = 1
-#把保存文件的代码封装成函数
-def save_file(one,two,count):
-        file_name_one = 'one_' + str(count) + '.txt'
-        file_name_two = 'two_' + str(count) + '.txt'
-        one_file = open(file_name_one,'w')
-        two_file = open(file_name_two,'w')
-
-        one_file.writelines(one)
-        two_file.writelines(two)
-
-for each_line in f:
-	if each_line[:6] !=  '==== ':
-		# 这里进行字符串分割操作
-		(role,line_begin) = each_line.split(1)
-		if role =='a':
-			one.append(line_begin)
-		if role == 'b':
-			two.append(line_begin)
-
-	else:
-		#  文件分别保存操作
-		#  调用保存文件的函数
-		save_file(one,two,count)
-
-		one_file.close()
-		two_file.close()
-
-		one = []  #初始化
-		two = []
-		count +=1
-
-save_file(one,two,count)
-
-f.close()
-
-print('------------------------over-------------------------------------------')
-模块：模块是一个包含所有你定义的函数和变量的文件，后缀名是.py。模块可以被别的程序引用，以使用该模块中的函数等功能。
-OS: Operating System操作系统   导入这个模块后可以使用其函数
 pick le  泡菜技术，将所有内容以二进制存放，主要用于某些内容太长的文件，使用pickle可以让代码更简洁
 存放：pickling
 读取：unpickling
