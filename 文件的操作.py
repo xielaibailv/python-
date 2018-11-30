@@ -215,26 +215,29 @@ def save_file(one,two,count):
     one_file.writelines(one)
     two_file.writelines(two)
 
+    one_file.close()
+    two_file.close()
+
 for each_line in f:
     if each_line[:6] !=  '==== ':
         # 这里进行字符串分割操作
-        (role,line_begin) = each_line.split(1)
+        (role,line_begin) = each_line.split(':')
         if role =='a':
             one.append(line_begin)
         if role == 'b':
             two.append(line_begin)
 
-        else:
-            #  文件分别保存操作
-            #  调用保存文件的函数
-            save_file(one,two,count)
+    else:
+        #  文件分别保存操作
+        #  调用保存文件的函数
+        save_file(one,two,count)
 
-            one_file.close()
-            two_file.close()
+        # one_file.close()
+        # two_file.close()
 
-            one = []  #初始化
-            two = []
-            count +=1
+        one = []  #初始化
+        two = []
+        count +=1
 
 save_file(one,two,count)
 

@@ -9,23 +9,7 @@
 
 
       
-       
 
-pick le  泡菜技术，将所有内容以二进制存放，主要用于某些内容太长的文件，使用pickle可以让代码更简洁
-存放：pickling
-读取：unpickling
-import pickle
-list = [1,2,3,24,'sheus',['时间','空间']]
-pickle_file = open('list.pickle','wb')   #一定要用'wb'
-pickle.dump(list,pickle_file)   #把列表倒进泡菜缸list
-pickle_file.close()
-
-pickle_file = open('list.pickle','rb')     #一定要用'rb'
-list2 = pickle.load(pickle_file)
->>> print(list2)
-[1, 2, 3, 24, 'sheus', ['时间', '空间']]
-
-print('------------------------over-------------------------------------------')
 
 异常处理：exception
 file_name = input('请输入文件名：')
