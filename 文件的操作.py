@@ -53,7 +53,35 @@ else:
     for each in diff:                                       #不能直接打印diff
         print("第%d行不一样" % each)
 
+#-------------------------
+#使用异常处理的方法对上面的代码进行优化
 
+def different(file1,file2):
+    count = 0           #统计行数
+    diff = []                #统计不一样的数量
+    with open(file1) as f1:
+        with open(file2) as f2:
+        #上面2句可以简化，使用    with open(file1) as f1,open(file2) as f 2:
+            for line1 in f1:
+                line2 = f2.readline()     #两个文件各读一行
+                count += 1
+                if line1 != line2:
+                    diff.append(count)
+
+    return diff
+
+
+file1 = input('请输入需要比较的头一个文件名：')
+file2 = input('请输入需要比较的另一个文件名：')
+#因为上面的函数返回了diff，但需要用变量存起来，下面才能调用
+diff = different(file1,file2)
+
+if len(diff) == 0:
+    print("两份文件完全一样！")
+else:
+    print("两个文件总共有%d处不一样" % len(diff))
+    for each in diff:
+        print("第%d行不一样" % each)
 
 #------------------------------------------------------------------------
 #  3. 编写一个程序，当用户输入文件名和行数（N）后，将该文件的前N行内容打印到屏幕上
