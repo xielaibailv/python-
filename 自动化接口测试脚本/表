@@ -1,0 +1,22 @@
+db：sanhua
+
+t_cal_day_avg       所有电表的每日需量(一分钟一个点)
+t_enos_device        所有电表信息，可查电表mdmid
+t_site                          站点信息，可查询site_id对应的站点名称site_name
+t_dict_region           城市编号对应表
+
+
+db：sanhua_electric
+
+t_billing     查询电表mdmid对应的计费点billingid
+
+t_sitedetail           查询计费点信息，关键字billingid,也可查询计费点对应站点siteId
+
+t_electricity_price   所有省电价方案
+
+t_information       所有计费点报装信息，可根据billingId查询
+
+t_electricity        所有账单，通过pointId查询
+
+                               billingId和 pointId是同一个，
+                               siteId和site_id也是同一个
