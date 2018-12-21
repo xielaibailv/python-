@@ -100,11 +100,6 @@ class Fish:
         return (self.initial_y, self.initial_y)
 
 
-
-
-# sum_x = [0,10]     #x轴移动范围
-# sum_y = [0,10]     #y轴移动范围
-
 #游戏主体
 def play():
     tortoise = Tortoise()
