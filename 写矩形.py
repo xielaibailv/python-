@@ -13,9 +13,9 @@ class Rectangle:
             self.width = value
             self.height = value
         else:
-            #为什么等于value不知道,但是这样写会造成死循环
+            # 下面这句会造成死循环(原因见笔记)
             #self.name = value
-            #1、需要使用下面的方法
+            #1、需要使用下面的方法，调用基类的方法
             #super().__setattr__(name,value)
             #2、除了上面方法，还可以用__dict__    字典属性
             self.__dict__[name] = value
