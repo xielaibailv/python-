@@ -25,3 +25,14 @@ elif 60 > score >=0:
 	print("D")
 else:
 	print("输入错误！")
+
+
+
+# 缩减代码 可以写成  A(条件成立时) if else B(条件不成立时),这样可以更省事
+# 为了方便观看可以将代码换行，用 [] 将代码包裹起来，比用反斜杠方便
+level = [("c") if 60<= score <= 80 else
+	("B") if 80 < score <= 90 else
+	("A") if 90 < score <= 100 else
+	("D") if 0 < score < 60 else
+		 print("输入错误")]
+print(level)
