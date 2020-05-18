@@ -2,6 +2,7 @@
 # __iter__()
 # __next__()
 
+
 class Fibs1:
 	def __init__(self):
 		self.a = 0

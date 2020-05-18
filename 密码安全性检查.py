@@ -91,3 +91,78 @@ while 1:
     # 因为其判断最为麻烦（注意还要求必须是字母开头）
     # 所以很有可能满足了“中”却因为额外的条件满足不了“高”
     # 因此我们把事儿比较多的高放中间判断，满足不了“高”，那就只能是最后的 else“中”了。
+
+
+    #--------------------------很久之后重写的分割线------------------------------------------------------------------------------------
+def check():
+    content = '''
+     密码安全性检查代码
+
+低级密码要求：
+  1. 密码由单纯的数字或字母组成
+  2. 密码长度小于等于8位
+
+ 中级密码要求：
+  1. 密码必须由数字、字母或特殊字符（仅限：~!@#$%^&*()_=-/,.?<>;:[]{}|\）任意两种组合
+   2. 密码长度不能低于8位
+
+ 高级密码要求：
+   1. 密码必须由数字、字母及特殊字符（仅限：~!@#$%^&*()_=-/,.?<>;:[]{}|\）三种组合
+   2. 密码只能由字母开头
+   3. 密码长度不能低于16位'''
+
+    pwd = input('请输入需要检查的密码组合：')
+    pwd_level = level(pwd)
+    print('您的密码安全级别评定为：{}'.format(pwd_level))
+    if pwd_level == '高':
+        print('请继续保持')
+    else:
+        print("请按以下方式提升您的密码安全级别：\n\
+    \t1. 密码必须由数字、字母及特殊字符三种组合\n\
+    \t2. 密码只能由字母开头\n\
+    \t3. 密码长度不能低于16位")
+
+
+# 判断密码级别
+def level(pwd):
+    symbols = r'''`!@#$%^&*()_+-=/*{}[]\|'";:/?,.<>'''
+    letter = 'zxcvbnmasdfghjklqwertyuiopZXCVBNMASDFGHJKLQWERTYUIOP'
+    nums = '01234567890'
+    length = len(pwd)
+
+    # 判断长度
+
+    if length <= 8:
+        flag1 = 1
+    elif 8 < length <= 16:
+        flag1 = 2
+    else:
+        flag1 = 3
+
+    # 判断复杂度
+    flag2 = 0
+    # 判断符号，一旦找到一个就跳出
+    for each in pwd:
+        if each in symbols:
+            flag2 += 1
+            break
+
+    for each in pwd:
+        if each in letter:
+            flag2 += 1
+            break
+
+    for each in pwd:
+        if each in nums:
+            flag2 += 1
+            break
+
+    if flag1 == 1 or flag2 == 1:
+        level = '低'
+    elif flag1 == 3 and flag2 == 3:
+        level = '高'
+    else:
+        level = '中'
+    return level
+
+check()

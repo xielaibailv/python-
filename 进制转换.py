@@ -38,3 +38,21 @@ while q:
         print('十进制 -> 二进制 : %d -> ' % num, bin(num))
     else:
         q = False
+
+# -----------------------------------------很久之后的重写--------------------------------------------------------------
+def change():
+    while True:
+        num = input('请输入一个整数（输入q结束程序）：')
+        if num in 'q/Q':
+            break
+        elif num.isdigit():
+            num = int(num)
+            print('十进制  -->  十六进制：%d -->%x' %(num,num))
+            print('十进制  -->  八进制：%d -->%o' % (num,num))
+            print('十进制  -->  二进制：%d--> '% num, bin(num))
+        else:
+            print('输入类型错误')
+            continue
+
+
+change()
