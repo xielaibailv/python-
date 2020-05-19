@@ -47,36 +47,36 @@ print("游戏结束！")
 # 引入模块要在代码前面导入  import random
 
 '''
-
-#第三版，为用户提供三次机会尝试，机会用完或者用户猜中答案均退出循环
-
 import random
+#第三版，为用户提供三次机会尝试，机会用完或者用户猜中答案均退出循环
+def guess1():
 
-times = 3
-secret= random.randint(0,9)
-temp = input("来猜猜小公主我现在心里想的是哪一个数字：")
-guess = int(temp)
-if guess == secret:
-            print("我擦，你是小公主我肚子里的蛔虫吗？？！！")
-            print("哼，猜中了也没有奖励！")
-while guess !=secret:
-    times -= 1
-    if times > 0:
-        temp=input("哎呀，猜错了啦，再给你一次机会：")
-        guess=int(temp)
-        if guess == secret:
-                print("终于猜对了呀，哼，真是的，居然不是一次就中，你根本不爱我！")
+
+    times = 3
+    secret= random.randint(0,9)
+    temp = input("来猜猜小公主我现在心里想的是哪一个数字：")
+    guess = int(temp)
+    if guess == secret:
+                print("我擦，你是小公主我肚子里的蛔虫吗？？！！")
                 print("哼，猜中了也没有奖励！")
+    while guess !=secret:
+        times -= 1
+        if times > 0:
+            temp=input("哎呀，猜错了啦，再给你一次机会：")
+            guess=int(temp)
+            if guess == secret:
+                    print("终于猜对了呀，哼，真是的，居然不是一次就中，你根本不爱我！")
+                    print("哼，猜中了也没有奖励！")
+            else:
+                    if guess > secret:
+                            print("大了大了~~~")
+                    else:
+                            print("小了小了！！")
         else:
-                if guess > secret:
-                        print("大了大了~~~")
-                else:
-                        print("小了小了！！")
-    else:
-        print("机会没有了。")
-        break
+            print("机会没有了。")
+            break
 
-print("游戏结束！")
+    print("游戏结束！")
 
 
 #附上小甲鱼写的，比上面的代码稍显简洁
@@ -107,14 +107,49 @@ print("游戏结束！")
 
 
 #第四版，当用户输入错误类型的时候，及时提醒用户重新输入，防止程序崩溃
+# import random
+#
+#
+# temp = input("来猜猜小公主我现在心里想的是哪一个数字：")
+# #temp.isdigit()      所有字符都是数字，为真返回 True，否则返回 False
+# #前加一个  not ，表示 not true = false
+# while not temp.isdigit():
+#     print("输入不合法，请重新输入!")
+#     temp = input('请输入整数：')
+#     guess = int(temp)
+#     pass
+
+# -------------重写---------------------------------------
 import random
 
 
-temp = input("来猜猜小公主我现在心里想的是哪一个数字：")
-#temp.isdigit()      所有字符都是数字，为真返回 True，否则返回 False
-#前加一个  not ，表示 not true = false
-while not temp.isdigit():
-    print("输入不合法，请重新输入!")
-    temp = input('请输入整数：')
-    guess = int(temp)
-    pass
+def guess2():
+    secret = random.randint(1,10)
+    times = 3
+    num = input('来猜猜小公主我现在心里想的是哪一个数字：')
+
+    while not num.isdigit():
+        print('我说，要输入数字哦，你不乖')
+        num = input('重新输：')
+    num = int(num)
+    if num == secret:
+        print('你是小公主我肚子里的蛔虫吗？？！')
+    while (num != secret) and (times > 0):
+        times -= 1
+        if num < secret:
+            print('小了yo')
+        else:
+            print('大了啊')
+    else:
+        if num == secret:
+            print('终于猜对了。。。')
+        else:
+            print('机会用光了也没猜出来啊。。。')
+
+
+
+
+guess2()
+
+
+
