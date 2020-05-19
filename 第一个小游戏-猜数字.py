@@ -119,37 +119,5 @@ def guess1():
 #     guess = int(temp)
 #     pass
 
-# -------------重写---------------------------------------
-import random
-
-
-def guess2():
-    secret = random.randint(1,10)
-    times = 3
-    num = input('来猜猜小公主我现在心里想的是哪一个数字：')
-
-    while not num.isdigit():
-        print('我说，要输入数字哦，你不乖')
-        num = input('重新输：')
-    num = int(num)
-    if num == secret:
-        print('你是小公主我肚子里的蛔虫吗？？！')
-    while (num != secret) and (times > 0):
-        times -= 1
-        if num < secret:
-            print('小了yo')
-        else:
-            print('大了啊')
-    else:
-        if num == secret:
-            print('终于猜对了。。。')
-        else:
-            print('机会用光了也没猜出来啊。。。')
-
-
-
-
-guess2()
-
 
 
