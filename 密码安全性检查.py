@@ -159,7 +159,7 @@ def level(pwd):
 
     if flag1 == 1 or flag2 == 1:
         level = '低'
-    elif flag1 == 3 and flag2 == 3:
+    elif flag1 == 3 and flag2 == 3 and pwd[0].isalpha():
         level = '高'
     else:
         level = '中'
