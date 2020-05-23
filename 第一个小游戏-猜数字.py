@@ -47,11 +47,13 @@ print("游戏结束！")
 # 引入模块要在代码前面导入  import random
 
 '''
-import random
+
 #第三版，为用户提供三次机会尝试，机会用完或者用户猜中答案均退出循环
+
+import random
+
+
 def guess1():
-
-
     times = 3
     secret= random.randint(0,9)
     temp = input("来猜猜小公主我现在心里想的是哪一个数字：")
@@ -79,7 +81,9 @@ def guess1():
     print("游戏结束！")
 
 
-#附上小甲鱼写的，比上面的代码稍显简洁
+# guess1()
+
+# 附上小甲鱼写的，比上面的代码稍显简洁
 # import random
 # times = 3
 # secret = random.randint(1,10)
@@ -106,10 +110,9 @@ def guess1():
 # print("游戏结束，不玩啦^_^")
 
 
-#第四版，当用户输入错误类型的时候，及时提醒用户重新输入，防止程序崩溃
-# import random
-#
-#
+# 第四版，当用户输入错误类型的时候，及时提醒用户重新输入，防止程序崩溃
+
+
 # temp = input("来猜猜小公主我现在心里想的是哪一个数字：")
 # #temp.isdigit()      所有字符都是数字，为真返回 True，否则返回 False
 # #前加一个  not ，表示 not true = false
@@ -120,4 +123,79 @@ def guess1():
 #     pass
 
 
+#  --------------------------2020.5.20重写--------------------------------------------
+# 有一点没有实现，就是在用户非首次猜中，和首次猜中，返回结果不一样
 
+def guess2():
+    secret = random.randint(1,10)
+    times = 3
+
+    while times:
+        num = input('来猜猜小公主我现在心里想的是哪一个数字：')
+        while not num.isdigit():
+            print('我说要输入数字，不乖哦')
+            num = input('重新输：')
+        else:
+            num = int(num)
+            if num == secret:
+                print('你是小公主我肚子里的蛔虫吗？？！！')
+                break
+            else:
+                times -= 1
+                if num < secret:
+                    print("小了小了！！")
+                else:
+                    print("大了大了~~~")
+    else:
+        print('次数用光了哦')
+
+    print('GoodBye~')
+
+
+# guess2()
+
+
+# 结合之前的guess1（），重新捋一遍执行顺序
+#  ---------------MD,不行，缕不顺，以后再说吧--2020.520-----------------
+class Guess:
+    @staticmethod
+    def judge_type(self):
+        while 1:
+            num = input('来猜猜小公主我现在心里想的是哪一个数字：')
+            try:
+                num = int(num)
+                return num
+            except TypeError:
+                print('我说要输入数字，不乖哦')
+                num = input('重新输：')
+
+    def guess3(self):
+        # secret = random.randint(1, 10)
+        secret = 8
+        times = 3
+
+        num = self.judge_type(self)
+        if num == secret:
+            print('你是小公主我肚子里的蛔虫吗？？！！')
+        else:
+
+            while num != secret and times > 0:
+
+                while times:
+                    times -= 1
+                    if num == secret:
+                        print("终于猜对了呀，哼，真是的，居然不是一次就中，你根本不爱我！")
+                        break
+
+                    elif num < secret:
+                        print("小了小了！！")
+                    else:
+                        print("大了大了~~~")
+                    # num = input('再来一次：')
+                    num = self.judge_type(self)
+                break
+            else:
+                print('次数用光了哦')
+
+        print('GoodBye~')
+Guess().guess3()

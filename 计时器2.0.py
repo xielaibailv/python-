@@ -12,6 +12,7 @@ class MyTime():
         self.end = 0
 
     # __str__   and  __repr__这两个方法都是用于显示的，__str__是面向用户的，而__repr__面向程序员。
+    # 这个的作用是  可以将方法的返回值打印出来
     # 他们可改变一个实例的字符串表示
     def __str__(self):
         return self.prompt

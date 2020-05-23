@@ -82,9 +82,6 @@ def LogIn():
                     break
                 else:
                     print("密码错误哦，请重新尝试!", end='')
-            # 这个break必不可少！！不然就会陷在这个循环里了
-            #这个break貌似作用是能跳出最外面的循环，但是为什么呢？
-            #哦！break的作用就是跳出循环，不管放在哪，它的作用应该都是跳出整个程序的循环。。所以。。（我猜的）
             break
         else:
             name = input("您输入的用户名不存在，请重新输入：")
@@ -110,7 +107,7 @@ def main():
             break
 
 
-main()
+# main()
 
 
 #------教程-------------------------------------------------
@@ -176,3 +173,40 @@ def showmenu():
 
 
 showmenu()
+
+
+# ---------------------重写----2020.521--------------------------------------
+def login():
+    print("""
+          |---新建用户：n/N---| 
+          |---登录账号：e/E---|
+          |---退出程序：q/Q---|
+        """)
+    user = {}
+    while True:
+        code = input('请输入指令代码：')
+        if code == 'N' or code == 'n':  # 新建
+            name = input('请输入用户名：')
+            while name in user:
+                name = input('此用户名已经被使用，请重新输入吧：')
+            else:
+                pwd = input('请输入密码：')
+                user[name] = pwd
+                print('注册成功，赶紧试试登录吧')
+
+        elif code == 'E' or code == 'e':  # 登录
+            name = input('请输入用户名：')
+            if name in user:
+                pwd = input('请输入密码：')
+                if user[name] == pwd:
+                    print('欢迎进入登录系统！')
+                else:
+                    print('密码错误')
+            else:
+                print('此账号不存在哦')
+        elif code == 'Q' or code == 'q':  # 退出
+            break
+        else:
+            print('你输的什么指令哦，人家不懂呢')
+
+login()
