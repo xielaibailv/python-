@@ -2,7 +2,7 @@
 # 1. 编写一个程序，接受用户的输入并保存为新的文件
 
 #因为filename会设置为全局变量，所以是放在了函数外，需要将这个参数传入函数
-def write_file(filename):
+def write_file1(filename):
     f = open(filename, "wt")
     print("请输入内容【单独输入':wq'保存退出】：")
 
@@ -18,8 +18,25 @@ def write_file(filename):
     f.close()
 
 filename = input("请输入文件名：")
-write_file(filename)
+write_file1(filename)
 
+
+# ------------重新write_file-------------2020.524------------------------------
+def write_file2():
+
+    file_name = input('请输入文件名称：')
+    print('请输入内容（按:q进行保存并退出）：')
+
+    with open(file_name,'w') as f:
+        while True: # 解决让用户一直输入的问题，换行不会结束程序
+            content = input()
+            if content != ':q':
+                f.write('%s\n' % content)
+            else:
+                break
+
+
+write_file2()
 #-----------------------------------------------------------------------------
 
 # 2.比较用户输入的两个文件不同的行数
@@ -83,6 +100,48 @@ else:
     for each in diff:
         print("第%d行不一样" % each)
 
+
+# -------重写-----2020.0524---------------------------------------------
+
+def diffrent1(f1, f2):
+    f1 = open(f1)
+    f2 = open(f2)
+    line = 1  # 计数第几行不同
+    count = 0 # 计数总共有几行不同
+    for each_line1 in f1:
+        each_line2 = f2.readline()
+        if each_line1 != each_line2:
+            print('第{}行不一样'.format(line))
+            count += 1
+        line += 1
+    if count:
+        print('总共有{}处不一样'.format(count))
+    else:
+        print('两个文件一模一样哦')
+    f1.close()
+    f2.close()
+
+
+def diffrent2(f1, f2):
+    line = 1  # 计数第几行不同
+    count = 0  # 计数总共有几行不同
+
+    with open(f1) as f1:
+        with open(f2) as f2: # 打开2个文件
+            for each_line1 in f1:
+                each_line2 = f2.readline()
+                if each_line1 != each_line2:
+                    print('第{}行不一样'.format(line))
+                    count += 1
+                line += 1
+            if count:
+                print('总共有{}处不一样'.format(count))
+            else:
+                print('两个文件一模一样哦')
+
+
+diffrent2('赞美.txt', '赞美 - 副本.txt')
+
 #------------------------------------------------------------------------
 #  3. 编写一个程序，当用户输入文件名和行数（N）后，将该文件的前N行内容打印到屏幕上
 
@@ -106,7 +165,7 @@ read_file(filename)
 
 
 #number 2,更简洁
-def read_file(filename,lines):
+def read_file(filename, lines):
     f = open(filename)
     #这时候就不能用each_line在文件里循环了，而是在行数里循环
     for i in range(int(lines)):
@@ -133,7 +192,20 @@ file_name = input(r'请输入要打开的文件（C:\\test.txt）：')
 line_num = input('请输入需要显示该文件前几行：')
 file_view(file_name, line_num)
 
+# --------------重写，2020.0524-----------------------------------------------------
+def read_file1():
+    f = input('请输入文件名：')
+    line = int(input('请输入行数：'))
+    temp = 1
 
+    with open(f) as f:
+        for each_line in f:
+            if temp <= line:
+                print(each_line)
+                temp += 1
+
+
+# read_file()
 #----------------------------------------------------------------------------------
 
 # 4. 在上一题的基础上扩展，用户可以随意输入需要显示的行数
@@ -189,7 +261,31 @@ filename = input("请输入文件名：")
 lines =input("请输入您想要阅读的行数位置【格式如 13:21 或 :21 或 21: 或 : 】：")
 read_file(filename,lines)
 
+# ------------重写，20200524---------------------------------------------
+def read_file():
+    filename = input("请输入文件名：")
+    lines = input("请输入您想要阅读的行数位置【格式如 13:21 或 :21 或 21: 或 : 】：")
+    (begin, end) = lines.split(':')
+    if begin == '':
+        begin = 1
+    if end == '':
+        end = -1
 
+
+    begin = int(begin) - 1  # 阅读从0行开始，但上面不能直接赋值0，因为用户是从1开始算的
+    end = int(end)
+    len = end - begin
+
+    with open(filename) as f:
+        for each_line1 in range(begin): # 假如begin不是1，消耗掉前面的内容
+            f.readline()
+        if len < 0:  # 打印全文
+            print(f.read())
+        else:
+            for each_line2 in range(len):
+                print(f.readline())
+
+read_file()
 
 #------------------------------------------------------------------------
 
@@ -223,7 +319,31 @@ rep_word = input('请输入需要替换的单词或字符：')
 new_word = input('请输入新的单词或字符：')
 file_replace(file_name, rep_word, new_word)
 
+# --------------------重写，20200524------------------------------------
+#  上面小甲鱼那个应该是有问题的
+def word_replace():
+    file = input('请输入文件名：')
+    old_word = input('请输入需要替换的单词或字符：')
+    new_word = input('请输入新的单词或字符：')
+    count = 0  # 计数有几处文字
+    content = [] # 保存替换后的内容
 
+    with open(file) as f:
+        for each_line in f:
+            if old_word in each_line:
+                count += each_line.count(old_word) # 每次循环要加上之前的数
+                each_line = each_line.replace(old_word, new_word) # 替换
+            content.append(each_line) #要在if块外面，不然只会保留替换的行，剩下的就没了
+
+    decide = input('\n文件中共有{}个【{}】\n您确定要把所有的【{}】替换为【{}】吗？\n【YES/NO】：'.format(count, old_word, old_word, new_word))
+    if decide in ('yes','Yes','YES'):
+        with open(file,'w') as f:
+            f.writelines(content)
+            print('替换完成')
+
+
+
+word_replace()
 #------------------------------------------------------------------------
 
 # 4. 将一个文件里的内容按某种方式分成两个文件保存
@@ -270,3 +390,6 @@ for each_line in f:
 save_file(one,two,count)
 
 f.close()
+
+
+
