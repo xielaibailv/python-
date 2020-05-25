@@ -392,4 +392,94 @@ save_file(one,two,count)
 f.close()
 
 
+# ----------------------------------------------------------------------------------------------------
+# 编写一个程序，统计当前目录下每个文件类型的文件数。
 
+import os
+
+def count_file1():
+    txt_file = 0
+    jpg_file = 0
+    py_file = 0
+    doc_file = 0
+    file_file = 0
+    else_file = 0
+    csv_file = 0
+
+    f_dir = os.getcwd()  # 获取当前路径
+    for each in os.listdir(f_dir):
+        if os.path.isdir(each):   #计算文件夹的个数
+            file_file += 1
+        else:
+            (f_name, f_extension) = os.path.splitext(each)  #将后缀名和文件名切分开
+            if f_extension == '.py':
+                py_file += 1
+            elif f_extension == '.jpg':
+                jpg_file += 1
+            elif f_extension == '.txt':
+                txt_file += 1
+            elif f_extension == '.docx':
+                doc_file += 1
+            elif f_extension == '.csv':
+                csv_file += 1
+            else:
+                else_file += 1
+
+    print('该文件夹下共有类型为【.txt】的文件：{}个'.format(txt_file))
+    print('该文件夹下共有类型为【.jpg】的文件：{}个'.format(jpg_file))
+    print('该文件夹下共有类型为【.py】的文件：{}个'.format(py_file))
+    print('该文件夹下共有类型为【.docx】的文件：{}个'.format(doc_file))
+    print('该文件夹下共有类型为【.csv】的文件：{}个'.format(csv_file))
+    print('该文件夹下共有类型为【文件夹】的文件：{}个'.format(file_file))
+
+# count_file()
+# -----------------上面写的不好，程序无法预知该目录下会有什么格式的文件，写死是不科学的
+# ------------应该用字典把文件格式及数量存起来
+
+# import os
+def count_file2():
+    type_dict = dict()
+
+    f_dir = os.getcwd()  # 获取当前路径
+    for each in os.listdir(f_dir):
+        print(each)
+        if os.path.isdir(each):   #计算文件夹的个数
+            type_dict.setdefault('文件夹', 0)
+            type_dict['文件夹'] += 1
+        else:
+            f_extension = os.path.splitext(each)[1]
+            # 如果键不在字典中，则使用默认值插入键；如果key在字典中，则返回key的值
+            type_dict.setdefault(f_extension, 0) # 一定要使用setdefault(),下面的方法会重置，不对
+            # type_dict[f_extension] = 0
+            type_dict[f_extension] += 1
+
+    for i in type_dict.keys():
+        print('该文件夹下共有类型为【{}】的文件：{}个'.format(i, type_dict[i]))
+
+count_file2()
+
+# --------------------------------------------------------------------------------------------------
+# 编写一个程序，计算当前文件夹下所有文件的大小
+
+def count_size1():
+    f_dir = os.getcwd()
+    list_file = os.listdir(f_dir)
+
+    for each in list_file:
+        print('{} [ {} Bytes]'.format(each, os.path.getsize(each)))
+
+
+# ---小甲鱼的方法——————————————————
+
+def count_size2():
+
+    all_files = os.listdir(os.curdir) # 使用os.curdir表示当前目录更标准
+    file_dict = dict()
+
+    for each_file in all_files:
+        if os.path.isfile(each_file):
+            file_size = os.path.getsize(each_file)
+            file_dict[each_file] = file_size
+
+    for each in file_dict.items():
+        print('%s【%dBytes】' % (each[0], each[1]))
