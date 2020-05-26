@@ -483,3 +483,112 @@ def count_size2():
 
     for each in file_dict.items():
         print('%s【%dBytes】' % (each[0], each[1]))
+
+
+# --------------------------------------------------------------------------------------------------
+# 编写一个程序，用户输入文件名以及开始搜索的路径，搜索该文件是否存在。如遇到文件夹，则进入文件夹继续搜索
+# 这种循环的查询，可以用递归解决
+
+def search_file(per_dir, target):
+
+    # 定位切换到用户录入的目录下
+    os.chdir(per_dir)
+
+    for each in os.listdir(os.curdir):  # 使用os.curdir表示当前目录更标准,使用per_dir会报错
+        if each == target:
+            print(os.getcwd() + os.sep + each) # 输出成路径+文件的格式；sep是输出\\
+        if os.path.isdir(each): # 如果是个文件，重复的查询，使用递归
+            search_file(each, target) # 传递当前目录
+            # 递归调用后，需要定位返回到上一目录
+            os.chdir(os.pardir)
+
+
+
+per_dir = input('请输入待查找的初始目录：')
+target = input('请输入需要查找的目标文件：')
+search_file(per_dir, target)
+
+# --------------------------------------------------------------------------------------------------
+# 编写一个程序，用户输入开始搜索的路径，查找该路径下（包含子文件夹内）所有的视频格式文件
+# （要求查找mp4 rmvb, avi的格式即可），并把创建一个文件（vedioList.txt）存放所有找到的文件的路径
+
+
+def search_mp4(per_dir):
+
+     os.chdir(per_dir)
+     for each in os.listdir(os.curdir):
+
+         f_extension = os.path.splitext(each)[1]
+         if f_extension in('.mp4', '.rmvb', '.avi'):
+             with open(r'E:\桌面\PycharmProjects\python-study\vediolist.txt', 'w') as f:
+                 f.writelines(os.getcwd() + os.sep + each)
+         if os.path.isdir(each):
+             search_mp4(each)
+             os.chdir(os.pardir)
+
+
+per_dir = input('请输入待查找的初始目录：')
+search_mp4(per_dir)
+
+
+#  ----------------------------------------------------------------------------------------------------------------------------------
+# 编写一个程序，用户输入关键字，查找当前文件夹内（如果当前文件夹内包含文件夹，则进入文件夹继续搜索）
+# 所有含有该关键字的文本文件（.txt后缀），要求显示该文件所在的位置以及关键字在文件中的具体位置（第几行第几个字符）
+
+# 这是小甲鱼的代码，但是有报错，是字符编码的问题，怎么改还不知道
+
+
+def print_pos(key_dict):
+    keys = key_dict.keys()
+    keys = sorted(keys)  # 由于字典是无序的，我们这里对行数进行排序
+    for each_key in keys:
+        print('关键字出现在第 %s 行，第 %s 个位置。' % (each_key, str(key_dict[each_key])))
+
+
+def pos_in_line(line, key):
+    pos = []
+    begin = line.find(key)
+    while begin != -1:
+        pos.append(begin + 1)  # 用户的角度是从1开始数
+        begin = line.find(key, begin + 1)  # 从下一个位置继续查找
+
+    return pos
+
+
+def search_in_file(file_name, key):
+    f = open(file_name, encoding='utf8')
+    count = 0  # 记录行数
+    key_dict = dict()  # 字典，用户存放key所在具体行数对应具体位置
+
+    for each_line in f:
+        count += 1
+        if key in each_line:
+            pos = pos_in_line(each_line, key)  # key在每行对应的位置
+            key_dict[count] = pos
+
+    f.close()
+    return key_dict
+
+
+def search_files(key, detail):
+    all_files = os.walk(os.getcwd())
+    txt_files = []
+
+    for i in all_files:
+        for each_file in i[2]:
+            if os.path.splitext(each_file)[1] == '.txt':  # 根据后缀判断是否文本文件
+                each_file = os.path.join(i[0], each_file)
+                txt_files.append(each_file)
+
+    for each_txt_file in txt_files:
+        key_dict = search_in_file(each_txt_file, key)
+        if key_dict:
+            print('================================================================')
+            print('在文件【%s】中找到关键字【%s】' % (each_txt_file, key))
+            if detail in ['YES', 'Yes', 'yes']:
+                print_pos(key_dict)
+
+
+key = input('请将该脚本放于待查找的文件夹内，请输入关键字：')
+detail = input('请问是否需要打印关键字【%s】在文件中的具体位置（YES/NO）：' % key)
+search_files(key, detail)

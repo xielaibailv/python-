@@ -7,9 +7,10 @@ city = pickle.load(f)
 
 temp = input("请输入城市：")
 code = city[temp]
-file = urllib.request.urlopen('http://m.weather.com.cn/mweather/' +code + '.shtml' )
-weatherhtml = file.read().decode('utf-8')
+file = urllib.request.urlopen('http://m.weather.com.cn/mweather/' + code + '.shtml' )
+weatherhtml = file.read()
 weatherjson = json.JSONDecoder().decode(weatherhtml)
+# weatherjson = json.loads(weatherhtml)
 weatherinfo = weatherjson['weatherinfo']
 
 print('城市：',weatherinfo[city])
