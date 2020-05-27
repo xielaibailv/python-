@@ -43,3 +43,73 @@ def split_file(filename):
     f.close()
 
 split_file('record.txt')
+
+# ------------重写---------------------2020.00527-------------------------------------------------
+
+def save_file2(boy, girl, num):
+    boy_file = 'boy_' + str(num) + '.pickle'
+    girl_file = 'girl_' + str(num) + '.pickle'
+    with open(boy_file, 'wb') as bf:
+        pickle.dump(boy, bf)
+    with open(girl_file, 'wb') as gf:
+        pickle.dump(girl, gf)
+
+
+def splitfile():
+    boy = []
+    girl = []
+    num = 1
+
+    with open('record.txt') as f:
+        for each in f:
+            if each[:6] != '======':
+                (name, content) = each.split(':', 1)
+                if name == '小甲鱼':
+                    boy.append(content)
+                elif name == '小客服':
+                    girl.append(content)
+            else:
+                save_file2(boy, girl, num)
+                num += 1
+                boy = []
+                girl = []
+            save_file2(boy, girl, num)
+
+
+splitfile()
+
+
+#  ------------分别保存对话-----------------------------------------------------------------------------
+def save_file2(boy, girl, num):
+    boy_file = ('boy_{}.txt'.format(num))
+    girl_file = ('girl_{}.txt'.format(num))
+    with open(boy_file, 'w') as file1:
+        file1.writelines(boy)
+    with open(girl_file, 'w') as file1:
+        file1.writelines(girl)
+
+
+def dofile():
+    f = open('record.txt')
+    boy = []
+    girl = []
+    num = 1
+
+    for each in f:
+        if each[:6] != '======': # 字符串分割
+            (name,content) = each.split(':', 1)  # 1表示分割几次
+            if name == '小甲鱼':
+                boy.append(content)
+            elif name == '小客服':
+                girl.append(content)
+        else: # 分别保存文件
+            save_file2(boy, girl, num)
+            num += 1
+            boy = []
+            girl = []
+        save_file2(boy, girl, num) # 在循环后第三段话还需要保存一下
+
+    f.close()
+
+
+dofile()

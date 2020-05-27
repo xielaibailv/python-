@@ -2,7 +2,7 @@ import urllib.request
 import json
 import pickle
 
-f = open('city.pickle','rb')
+f = open('city.pickle', 'rb')
 city = pickle.load(f)
 
 temp = input("请输入城市：")
