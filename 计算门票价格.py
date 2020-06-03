@@ -19,4 +19,56 @@ adult = Ticket()
 child = Ticket(children = True)
 print('2个成人+1个孩子的总平日票价：%d' %(adult.calcPrice(2) + child.calcPrice(1)))
 
-#感觉自己有时候会将问题 想的过于复杂，以至于无法解决
+# -----小甲鱼的代码-------------------------------------------------------
+class Ticket:
+    def __init__(self, weekend=False, child=False):
+        self.exp = 100
+        if weekend:
+            self.inc = 1.2
+        else:
+            self.inc = 1
+        if child:
+            self.discount = 0.5
+        else:
+            self.discount = 1
+
+    def calcPrice(self, num):
+        return self.exp * self.inc * self.discount * num
+
+
+# -----重写，2020.0603-------------------------------------------------------
+# 自己写的太复杂了
+
+class Ticket1:
+    def __init__(self):
+        self.ticket = 100
+
+    def weekendprice(self):
+        ticket = self.ticket * 1.2
+        return ticket
+
+    def childprice(self):  # 这个价格定义没必要搞成函数，增加复杂度，不同的成员可以通过多次传参来搞定
+        ticket = self.ticket * 0.5
+        return ticket
+
+    def weekprice(self):
+        ticket = self.ticket
+        return ticket
+
+    def countprice(self):
+        msg= input('请分别输入成人数量，小孩数量，是否是工作日（y/n，用逗号隔开）:')
+        (adult, children, weektime) = msg.split(",")
+        adult = int(adult)
+        children = int(children)
+        childrenprice = (self.childprice()) * children
+        if weektime == 'y' or weektime == 'Y':
+            adultprice = (self.weekprice()) * adult
+        else:
+            adultprice = (self.weekendprice()) * adult
+        price = adultprice + childrenprice
+        print('总票价为：% 0.2f' % price)
+
+
+if __name__ == "__main__":
+    t = Ticket1()
+    t.countprice()

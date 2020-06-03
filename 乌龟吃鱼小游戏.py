@@ -116,15 +116,6 @@ def play():
         # 鱼被乌龟吃掉，条件是他们的位置相同
         # 乌龟的位置
         # position = tortoise.move()
-        # # 在迭代器中删除列表元素是非常危险的，经常会出现意想不到的问题，因为迭代器是直接引用列表的数据进行引用
-        # # 这里我们把列表拷贝给迭代器，然后对原列表进行删除操作就不会有问题了^_^(其实不是很懂)
-        # # 将列表拷贝
-        # for each_fish in fish[:]:
-        #     if each_fish.move() == position:
-        #         # 位置相同，鱼被吃一只,调用eat()
-        #         tortoise.eat()
-        #         fish.remove(each_fish)
-        #         print('有一条鱼儿被吃掉了...')
 
          #游戏结束判断
         print(tortoise.power)
