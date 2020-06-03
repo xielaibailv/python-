@@ -40,3 +40,26 @@ def testCase():
 
 if "__name__" == "__main__":
 	testCase()
+
+
+
+# -----------------重写 --2020.6.3----------------------------------------------------
+
+class Rectangle2:
+    def __init__(self):
+        self.length = 5
+        self.width = 4
+
+    def setRect(self):  # 赋值的话，直接修改掉属性值
+        print('请输入矩形的长和宽...')
+        self.length = float(input('长：'))
+        self.width = float(input('宽：'))
+
+    def getRect(self):   # 不需要再去处理和获得值，直接调用属性值就可以
+        # length = float(self.length)
+        # width = float(self.width)
+        print('这个矩形的长是：%0.2f，宽是：%0.2f' % (self.length, self.width))
+
+    def getArea(self):
+        area = self.length * self.width
+        print(area)
