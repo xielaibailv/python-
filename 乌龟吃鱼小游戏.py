@@ -11,38 +11,37 @@
 # 鱼暂不计算体力
 # 当乌龟体力值为0（挂掉）或者鱼儿的数量为0游戏结束
 
-#choice ：从序列里随机获取一个元素
-#randint:如果想从一个范围内随机生成一个数，还是用这个比较好
-
-#鱼和乌龟的数量不能放到初始变量里，为什么还不知道，比较难定义吧
+# choice ：从序列里随机获取一个元素
+# randint:如果想从一个范围内随机生成一个数，还是用这个比较好
 
 
 import random
 
-sum_x = [0,10]     #x轴移动范围
-sum_y = [0,10]     #y轴移动范围
+sum_x = [0, 10]     # x轴移动范围
+sum_y = [0, 10]     # y轴移动范围
+
 
 class Tortoise:
     def __init__(self):
-        #初始体力
+        # 初始体力
         self.power = 100
-        #初始位置也要放在这里，初始的东西
-        #随机生成数的范围虽然可以直接写（0,10），但更好的是引用全局变量sum_x,sum_y
-        #这样假如修改，只需要修改全局变量即可
+        # 初始位置也要放在这里，初始的东西
+        # 随机生成数的范围虽然可以直接写（0,10），但更好的是引用全局变量sum_x,sum_y
+        # 这样假如修改，只需要修改全局变量即可
         self.initial_x = random.randint(sum_x[0], sum_x[1])
         self.initial_y = random.randint(sum_y[0], sum_y[1])
 
     def move(self):
         # 利用 direction 设置移动的方向，1/2：向上（向右）；-1/-2：向下（向左）；
-        #乌龟可以移动的步数，暂不考虑0
-        #因为这里直接将所有步数列出来了，就不需要step这个变量了
-        direction = [1,-1,2,-2]
+        # 乌龟可以移动的步数，暂不考虑0
+        # 因为这里直接将所有步数列出来了，就不需要step这个变量了
+        direction = [1, -1, 2, -2]
         # 新的位置在上一个位置的基础上随机移动
         new_x = self.initial_x + random.choice(direction)
         new_y = self.initial_y + random.choice(direction)
-        #检查移动后是否超出x轴边界
+        # 检查移动后是否超出x轴边界
         if new_x > sum_x[1]:
-            #这里不能是给new_x重新赋值，而应该是给初始值，此时的初始值就要开始变了
+            # 这里不能是给new_x重新赋值，而应该是给初始值，此时的初始值就要开始变了
             self.initial_x = sum_x[1] - (new_x - sum_x[1])
         elif new_x < sum_x[0]:
             self.initial_x = sum_x[0] - (new_x - sum_x[0])
@@ -56,25 +55,26 @@ class Tortoise:
         else:
             self.initial_y = new_y
 
-        #体力消耗
+        # 体力消耗
         self.power -= 1
-        #返回移动后的新位置
-        return (self.initial_y,self.initial_y)
+        # 返回移动后的新位置
+        return (self.initial_x, self.initial_y)
 
-    #吃鱼时体力的变化也算乌龟的方法，所以也写到乌龟的类里
-    #怎么才能吃鱼不用管，条件到main里面去写，但一旦满足这个条件，就可以调用eat()来实现体力值的增减
+    # 吃鱼时体力的变化也算乌龟的方法，所以也写到乌龟的类里
+    # 怎么才能吃鱼不用管，条件到main里面去写，但一旦满足这个条件，就可以调用eat()来实现体力值的增减
     def eat(self):
         self.power += 20
-        #因为上限只能是100，所以超出100需要掉到100
+        # 因为上限只能是100，所以超出100需要掉到100
         if self.power > 100:
             self.power = 100
 
 
 class Fish:
     def __init__(self):
-        #定义初始位置
+        # 定义初始位置
         self.initial_x = random.randint(sum_x[0], sum_x[1])
         self.initial_y = random.randint(sum_y[0], sum_y[1])
+
     def move(self):
         direction = [1, -1]
         # 新的位置在上一个位置的基础上随机移动
@@ -97,27 +97,27 @@ class Fish:
             self.initial_y = new_y
 
         # 返回移动后的新位置
-        return (self.initial_y, self.initial_y)
+        return (self.initial_x, self.initial_y)
 
 
-#游戏主体
+# 游戏主体
 def play():
     tortoise = Tortoise()
-    #因为要生成10条鱼，所以鱼创建为一个列表比较合适？
+    # 因为要生成10条鱼，所以鱼创建为一个列表比较合适？
     fish = []
     for i in range(10):
-        #每遍历一次创建一条鱼
+        # 每遍历一次创建一条鱼
         new_fish = Fish()
-        #将鱼存进列表
+        # 将鱼存进列表
         fish.append(new_fish)
 
-     #在循环的时候，鱼数量的变化和乌龟体力的变化这一过程，最好不要和判断游戏结束混在一起
+    # 在循环的时候，鱼数量的变化和乌龟体力的变化这一过程，最好不要和判断游戏结束混在一起
     while True:
         # 鱼被乌龟吃掉，条件是他们的位置相同
         # 乌龟的位置
         # position = tortoise.move()
 
-         #游戏结束判断
+        # 游戏结束判断
         print(tortoise.power)
         if not len(fish) :
             print('鱼被吃完了，游戏结束！')
@@ -139,7 +139,7 @@ def play():
 play()
 
 
-#教程写法，不知道为什么，我的永远是鱼被吃完，教程却是乌龟没有力气，检查过代码没有问题，坐标的生成也都是随机的，奇怪
+# 教程写法，不知道为什么，我的永远是鱼被吃完，教程却是乌龟没有力气，检查过代码没有问题，坐标的生成也都是随机的，奇怪
 # import random as r
 #
 # legal_x = [0, 10]
@@ -234,3 +234,89 @@ play()
 #             turtle.eat()
 #             fish.remove(each_fish)
 #             print("有一条鱼儿被吃掉了...")
+
+# ------------------------重写---2020.0604--------------------------------------------------
+# 这个代码每次运行，结局都是乌龟体力用完，问题可能在于运动的坐标移动方式和上面的不同
+
+x = [0,10]
+y = [0,10]
+
+
+class Fish:
+    def __init__(self):  # 初始化位置
+        self.fish_x = random.randint(x[0], x[1])
+        self.fish_y = random.randint(y[0], y[1])
+
+    def move(self):
+        per = random.randint(-1, 1)  # x和y各自有三种移动，向下，向上，不动，但实在是搞不定只能一个坐标轴随机移动，只好不考虑0，x，y都移动
+        # 新的位置 要重新 设置变量，不能搞到初始变量里
+        new_fish_x = self.fish_x + per
+        new_fish_y = self.fish_y + per
+
+        # 超出范围自动往相反方向走
+        if new_fish_x > x[1] or new_fish_x < x[0]:
+            new_fish_x = abs(new_fish_x - 1)
+        elif new_fish_y > y[1] or new_fish_y < y[0]:
+            new_fish_y = abs(new_fish_y - 1)
+        return new_fish_x, new_fish_y
+
+
+class Tortoise:
+    def __init__(self):
+        self.tortoise_x = random.randint(x[0], x[1])
+        self.tortoise_y = random.randint(y[0], y[1])
+        self.blood = 100
+
+    def move(self):
+        direction = [-2, -1, 1, 2]  # 有的可能4种移动步长
+        per = random.choice(direction)  # 随机选择一个数
+        new_tortoise_x = self.tortoise_x + per
+        new_tortoise_y = self.tortoise_y + per
+        self.blood -= 1
+
+        # 超出范围自动往相反方向走
+        if new_tortoise_x > x[1] or new_tortoise_x < x[0]:
+            new_tortoise_x = abs(new_tortoise_x - 1)
+        elif new_tortoise_y > y[1] or new_tortoise_y < y[0]:
+            new_tortoise_y = abs(new_tortoise_y - 1)
+        return new_tortoise_x, new_tortoise_y
+
+    def eat(self):
+        self.blood += 20
+        if self.blood > 100:
+            self.blood = 100
+
+
+class Game():
+    print('游戏开始')
+    tortoise = Tortoise()  # 实例化乌龟
+
+    # 因为鱼要有10条，所以必须要创建一个列表来保存10条鱼
+    fish = []
+    for i in range(10):
+        each_fish = Fish()
+        fish.append(each_fish)
+
+    while True:
+        position = tortoise.move()  # 乌龟的位置
+        if tortoise.blood == 0:
+            print('乌龟体力用完了')
+            break
+        if len(fish) == 0:
+            print('鱼被吃光了')
+            break
+
+        for each_fish in fish[:]:
+            if each_fish.move() == position:  # 每条鱼的位置等于乌龟的位置
+                print('鱼被吃掉了一条')
+                fish.remove(each_fish)
+                tortoise.eat()
+                # print('鱼的位置', each_fish.move())
+        print('乌龟的血量', tortoise.blood)
+        # print('乌龟的位置', tortoise.move())
+
+    print('游戏结束')
+
+
+if __name__ == "__main__":
+    game = Game()
