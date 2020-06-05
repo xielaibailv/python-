@@ -28,13 +28,14 @@ class Fish:
         new_fish_y = self.fish_y + per
 
         # 超出范围自动往相反方向走
-        if new_fish_x > x[1] or new_fish_x < x[0]:
-            new_fish_x = abs(new_fish_x - 1)
-        elif new_fish_y > y[1] or new_fish_y < y[0]:
-            new_fish_y = abs(new_fish_y - 1)
-        return new_fish_x, new_fish_y
-
-
+        # if new_fish_x > x[1] or new_fish_x < x[0]:
+        #     new_fish_x = abs(new_fish_x - 1)
+        # elif new_fish_y > y[1] or new_fish_y < y[0]:
+        #     new_fish_y = abs(new_fish_y - 1)
+        # return new_fish_x, new_fish_y
+        if new_fish_x > x[1]:
+            new_fish_x = new_fish_x - (new_fish_x - x[1])
+        elif new_fish_x < x[0]:
 class Tortoise:
     def __init__(self):
         self.tortoise_x = random.randint(x[0], x[1])
