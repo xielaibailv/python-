@@ -237,6 +237,8 @@ play()
 
 # ------------------------重写---2020.0604--------------------------------------------------
 # 这个代码每次运行，结局都是乌龟体力用完，问题可能在于运动的坐标移动方式和上面的不同
+# ------------------------重写---2020.0605--------------------------------------------------
+# 修改了坐标移动，虽然结局还是乌龟体力用完占大多数，但鱼也会被吃掉，逻辑上么毛病
 
 x = [0,10]
 y = [0,10]
@@ -248,16 +250,21 @@ class Fish:
         self.fish_y = random.randint(y[0], y[1])
 
     def move(self):
-        per = random.randint(-1, 1)  # x和y各自有三种移动，向下，向上，不动，但实在是搞不定只能一个坐标轴随机移动，只好不考虑0，x，y都移动
         # 新的位置 要重新 设置变量，不能搞到初始变量里
-        new_fish_x = self.fish_x + per
-        new_fish_y = self.fish_y + per
+        # x和y各自有三种移动，向下，向上，不动，但实在是搞不定只能一个坐标轴随机移动，只好不考虑0，x，y都移动
+        new_fish_x = self.fish_x + random.randint(-1, 1)
+        new_fish_y = self.fish_y + random.randint(-1, 1)
 
         # 超出范围自动往相反方向走
-        if new_fish_x > x[1] or new_fish_x < x[0]:
-            new_fish_x = abs(new_fish_x - 1)
-        elif new_fish_y > y[1] or new_fish_y < y[0]:
-            new_fish_y = abs(new_fish_y - 1)
+        if new_fish_x > x[1]:
+            new_fish_x = x[1] - (new_fish_x - x[1])
+        elif new_fish_x < x[0]:
+            new_fish_x = abs(new_fish_x - x[0])
+
+        if new_fish_y > y[1]:
+            new_fish_y = y[1] - (new_fish_y - y[1])
+        elif new_fish_y < y[0]:
+            new_fish_y = abs(new_fish_y - y[0])
         return new_fish_x, new_fish_y
 
 
@@ -269,16 +276,20 @@ class Tortoise:
 
     def move(self):
         direction = [-2, -1, 1, 2]  # 有的可能4种移动步长
-        per = random.choice(direction)  # 随机选择一个数
-        new_tortoise_x = self.tortoise_x + per
-        new_tortoise_y = self.tortoise_y + per
+        new_tortoise_x = self.tortoise_x + random.choice(direction)
+        new_tortoise_y = self.tortoise_y + random.choice(direction)
         self.blood -= 1
 
         # 超出范围自动往相反方向走
-        if new_tortoise_x > x[1] or new_tortoise_x < x[0]:
-            new_tortoise_x = abs(new_tortoise_x - 1)
-        elif new_tortoise_y > y[1] or new_tortoise_y < y[0]:
-            new_tortoise_y = abs(new_tortoise_y - 1)
+        if new_tortoise_x > x[1]:
+            new_tortoise_x = x[1] - (new_tortoise_x - x[1])
+        elif new_tortoise_x < x[0]:
+            new_tortoise_x = abs(new_tortoise_x - x[0])
+
+        if new_tortoise_y > y[1]:
+            new_tortoise_y = y[1] - (new_tortoise_y - y[1])
+        elif new_tortoise_y < y[0]:
+            new_tortoise_y = abs(new_tortoise_y - y[0])
         return new_tortoise_x, new_tortoise_y
 
     def eat(self):
@@ -313,7 +324,7 @@ class Game():
                 tortoise.eat()
                 # print('鱼的位置', each_fish.move())
         print('乌龟的血量', tortoise.blood)
-        # print('乌龟的位置', tortoise.move())
+        # print('乌龟的位置', position)
 
     print('游戏结束')
 
