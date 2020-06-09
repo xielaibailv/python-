@@ -56,6 +56,60 @@ class CountCodeLines1:
                     pass
 
 
+class CountCodeLines2:
+    '''
+    试图按照文件统计展示每个文件的代码行数；
+    如果是文件夹，则统计整个文件夹下的代码行数
+    '''
+    def __init__(self):
+        self.code_lines = {}  # 存放文件名+代码行数
+        self.target = 10  # 目标代码行，单位：万行
+
+    def count_code_lines(self,file): # 输出每个文件的代码行数
+        lines = 0
+        with open(file, encoding="utf-8") as f:
+            for each in f:
+                lines += 1
+        return lines
+
+    def search_file(self, file_path):
+        os.chdir(file_path)
+        for each_file in os.listdir(os.curdir):
+            try:
+                if os.path.splitext(each_file)[1] == ".py":  # 如果是py文件，则调用统计行数的函数
+                    lines = self.count_code_lines(each_file)
+                    self.code_lines[os.path.splitext(each_file)[0]] = lines
+                elif os.path.isdir(each_file): # 如果是目录，则需要进入下一层
+                    self.search_file(each_file)
+                    os.chdir(os.pardir)
+            except UnicodeDecodeError:  # 不可避免会遇到格式不兼容的文件，忽略
+                pass
+
+    def show_result(self):
+        easygui.msgbox("请选择想要统计的代码库：", title="代码统计小工具", ok_button="好的")
+        file_path = easygui.diropenbox()
+        self.search_file(file_path)
+
+        lines = 0  # 统计总行数
+        text = ""
+        for each in self.code_lines.keys():
+            lines += self.code_lines[each]
+            text += "{}.py 代码行数：{}\n".format(each, self.code_lines[each])
+        # 计算百分比
+        rate_progress= lines / (self.target * 10000)
+        # 计算差距
+        gap= (self.target * 10000) - lines
+        title = "统计结果"
+        if gap > 0:
+            msg = "您目前共累计编写了%d 行代码，完成进度：% 0.2f %%\n离 %d 万 行代码还差了 %d 行，请继续努力" % (
+            lines, rate_progress, self.target, gap)
+        else:
+            gap = abs(gap)
+            msg = "你超棒哦！！您目前共累计编写了%d 行代码，完成进度：% 0.2f %%\n比目标 %d 万行还多出 %d 行呢请继续努力哟~~~！"% (
+            lines, rate_progress, self.target, gap)
+        easygui.textbox(msg, title,text)
+
+
 if __name__ == "__main__":
-    game = CountCodeLines1()
-    game.showresult()
+    game = CountCodeLines2()
+    game.show_result()
