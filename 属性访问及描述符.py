@@ -51,7 +51,7 @@ class Record:
 class MyDes:
     saved = []
 
-    def __init__(self, name = None):
+    def __init__(self, name=None):
         self.name = name
         self.filename = self.name + '.pkl'
 
@@ -72,3 +72,27 @@ class MyDes:
     def __delete__(self, instance):
         os.remove(self.filename)
         MyDes.saved.remove(self.name)
+
+
+# 描述符类：将某种特殊类型的类的实例指派给另一个类的属性
+# 如下，MyDecriptor() 就是x的描述符类，当x被赋值时，会触发描述符的操作
+class MyDecriptor:
+    def __get__(self, instance, owner):  # 返回属性的值
+        print("getting... ", self, instance, owner)
+
+    def __set__(self, instance, value):
+        print("setting... ", self, instance, value)
+
+    def __delete__(self, instance):
+        print("delete... ", self, instance)
+
+
+class Test:
+    x = MyDecriptor()
+
+
+if __name__ == "__main__":
+    test = Test()
+    test.x = 10
+    del test.x
+

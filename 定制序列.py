@@ -13,20 +13,20 @@
 
 class CountList:
     def __init__(self,*args):
-        self.values = [ x for x in args]
-        self.count = { }.fromkeys(range(len(self.values)),0)
+        self.values = [x for x in args]  # 把参数存进列表
+        self.count = {}.fromkeys(range(len(self.values)), 0)  # 按元素下标：访问次数存进字典
 
     def __len__(self):
         return len(self.values)
 
-    def __getitem__(self,key):
-        self.count[key] += 1
+    def __getitem__(self, key):
+        self.count[key] += 1  # 一旦该方法被调用，对应下标的元素的访问次数（字典的值）就要+1
         return self.values[key]
 
 
 # 拓展：还是上面的功能，但更全面，需要支持append()、pop()、extend() 原生列表所拥有的方法。
-
-
+# 一旦需要支持删除等方法，就不能用字典来存放了，因为列表里的参数的下标会随着操作改变
+# 可以用列表来存放对应的元素的计数（然并卵，下面看不懂）
 class CountList2(list):
     def __init__(self, *args):
         super().__init__(args)
