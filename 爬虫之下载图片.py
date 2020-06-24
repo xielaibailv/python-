@@ -35,7 +35,7 @@ def save_cat2():
     url = 'http://placekitten.com/%d/%d' % (int(size[0]), int(size[1]))
     # 拼接图片保存地址
     save_file = save_dir + '/cat_%d_%d.jpg' % (int(size[0]), int(size[1]))
-    response = urllib.request.urlopen(url)
+    response = urllib.request.urlopen(url, timeout=100)
     cat_img = response.read()
 
     # save cats'photos
@@ -43,5 +43,5 @@ def save_cat2():
         f.write(cat_img)
 
 
-f
+
 save_cat2()
