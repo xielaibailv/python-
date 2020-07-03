@@ -1,2 +1,5 @@
+chardet
+beautifulsoup4
+easygui
 
 Unknown or unsupported command 'freeze'

@@ -9,9 +9,14 @@
 #   1，直接打印读取的页面数据（  前300个字符）
 #   2.判断某个网址的编码方法
 #   3.依次爬取url文件中的网址，并将内容保存为txt文件
+#   4. 从百度百科里爬取链接
+#   5,增加图形界面，搜索用户输入的关键字，将结果打印出来
 
-from urllib import request
+from urllib import request,parse
 import chardet  # 检测字符串的编码
+from bs4 import BeautifulSoup
+import re
+import easygui
 
 
 def fun1():
@@ -38,3 +43,36 @@ def fun3():
         file = 'url_' + str(index + 1) + '.txt'
         with open(file, 'w') as f:
             f.write(str(data))
+
+
+def fun4():
+    url = "http://baike.baidu.com/view/284853.htm"
+    html = request.urlopen(url)
+    data = html.read()
+    soup = BeautifulSoup(data, 'html.parser')  # 默认解析
+    # 使用正则，提取包含view的链接
+    a_link = soup.find_all(href=re.compile("view"))
+    # a_link = soup.find_all("a")
+
+    for each in a_link:
+        try:
+            print(each.text, "-->", "".join(["http://baike.baidu.com", each["href"]]))
+        except KeyError:   # 有的链接没有text，会报错，所以要忽略
+            pass
+
+
+def fun5():
+    word = easygui.enterbox("请输入你想搜索的关键字：")
+    word = parse.urlencode({"word": word})
+    response = request.urlopen("http://baike.baidu.com/search/word?%s" % word)
+    html = response.read()
+    soup = BeautifulSoup(html, "html.parser")
+    if soup.h2:  # 如果有副标题(h2)，则把标题和副标题,以及文本打印出来
+        # find()和 find_all() 均不能直接使用class=''这样的方式来查找，因为class是python的保留字，需要写成class_
+        # 到底是content 还是text，是根据前面是按照soup文件里的查找还是html里的参数查找
+        # text = ' '.join([soup.h1.text, soup.h2.text, "\n", soup.find(attrs={"name": "description"})["content"]])
+        text = ' '.join([soup.h1.text, soup.h2.text, "\n", soup.find(class_="lemma-summary").text])
+        easygui.textbox(msg="查询结果如下：", text=text)
+
+
+fun5()
