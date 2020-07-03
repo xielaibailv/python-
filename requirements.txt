@@ -1,3 +1,4 @@
+requests
 chardet
 beautifulsoup4
 easygui

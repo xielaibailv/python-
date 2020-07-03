@@ -1,5 +1,8 @@
 import urllib.request
 import easygui
+from bs4 import BeautifulSoup
+import requests
+import re
 
 
 def save_cat1():
@@ -43,5 +46,21 @@ def save_cat2():
         f.write(cat_img)
 
 
-
-save_cat2()
+# 获取妹子图片
+def save_pic():
+    url = r"http://jandan.net/ooxx/"
+    req = urllib.request.Request(url)
+    req.add_header('User-Agent',
+                   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36')
+    response = urllib.request.urlopen(req)
+    html = response.read().decode('utf-8')
+    soup = BeautifulSoup(html, 'lxml-xml')
+    pictures = re.findall('src="(.*?.jpg)', str(soup))
+    i = 1
+    for each in pictures:
+        file = r"E:\桌面\PycharmProjects\python-study\spider_pic\test_get_pic_%d.jpg" % i
+        url = "http:" + each
+        pic = requests.get(url)
+        with open(file, "wb") as f:
+            f.write(pic.content)
+        i += 1
